@@ -86,5 +86,8 @@ const StatsNavView: React.FC<{
     <Link className='subnav-item' click={filterWithToken(tokens, 's:skipped', false)} ctrlClick={filterWithToken(tokens, 's:skipped', true)}>
       Skipped <span className='d-inline counter'>{stats.skipped}</span>
     </Link>
+    <Link className='subnav-item' click={filterWithToken(tokens, 's:aborted', false)} ctrlClick={filterWithToken(tokens, 's:aborted', true)}>
+        {!!stats.aborted && statusIcon('aborted')} Aborted <span className='d-inline counter'>{stats.aborted}</span>
+    </Link>
   </nav>;
 };

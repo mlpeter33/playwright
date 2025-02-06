@@ -561,6 +561,7 @@ const emptyStats = (): Stats => {
     unexpected: 0,
     flaky: 0,
     skipped: 0,
+    aborted: 0,
     ok: true,
   };
 };

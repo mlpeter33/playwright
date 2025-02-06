@@ -29,7 +29,7 @@ export interface FullResult {
    *   - 'timedout' - the global time has been reached.
    *   - 'interrupted' - interrupted by the user.
    */
-  status: 'passed' | 'failed' | 'timedout' | 'interrupted';
+  status: 'passed' | 'failed' | 'timedout' | 'interrupted' | "aborted";
 
   /**
    * Test start wall time.
@@ -481,7 +481,7 @@ export interface TestCase {
    * See also [testResult.status](https://playwright.dev/docs/api/class-testresult#test-result-status) for the actual
    * status.
    */
-  expectedStatus: "passed"|"failed"|"timedOut"|"skipped"|"interrupted";
+  expectedStatus: "passed"|"failed"|"timedOut"|"skipped"|"interrupted" | "aborted";
 
   /**
    * A test ID that is computed based on the test file name, test title and project name. The ID is unique within
@@ -656,7 +656,7 @@ export interface TestResult {
    * The status of this test result. See also
    * [testCase.expectedStatus](https://playwright.dev/docs/api/class-testcase#test-case-expected-status).
    */
-  status: "passed"|"failed"|"timedOut"|"skipped"|"interrupted";
+  status: "passed"|"failed"|"timedOut"|"skipped"|"interrupted" | "aborted";
 
   /**
    * Anything written to the standard error during the test run.
