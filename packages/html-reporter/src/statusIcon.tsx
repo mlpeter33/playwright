@@ -18,7 +18,7 @@ import * as icons from './icons';
 import './colors.css';
 import './common.css';
 
-export function statusIcon(status: 'failed' | 'timedOut' | 'skipped' | 'passed' | 'expected' | 'unexpected' | 'flaky' | 'interrupted'): JSX.Element {
+export function statusIcon(status: 'failed' | 'timedOut' | 'skipped' | 'passed' | 'expected' | 'unexpected' | 'flaky' | 'interrupted' | 'aborted'): JSX.Element {
   switch (status) {
     case 'failed':
     case 'unexpected':
@@ -33,5 +33,7 @@ export function statusIcon(status: 'failed' | 'timedOut' | 'skipped' | 'passed' 
     case 'skipped':
     case 'interrupted':
       return icons.blank();
+    case 'aborted':
+      return icons.warning();
   }
 }

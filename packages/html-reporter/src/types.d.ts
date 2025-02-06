@@ -23,6 +23,7 @@ export type Stats = {
   flaky: number;
   skipped: number;
   ok: boolean;
+  aborted: number;
 };
 
 export type FilteredStats = {
@@ -97,7 +98,7 @@ export type TestResult = {
   steps: TestStep[];
   errors: string[];
   attachments: TestAttachment[];
-  status: 'passed' | 'failed' | 'timedOut' | 'skipped' | 'interrupted';
+  status: 'passed' | 'failed' | 'timedOut' | 'skipped' | 'interrupted' | 'aborted';
 };
 
 export type TestStep = {
