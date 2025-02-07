@@ -366,15 +366,15 @@ export class TestCase extends Base implements reporterTypes.TestCase {
   _determineTestStatus(): reporterTypes.TestStatus {
     console.log('🟢 Running _determineTestStatus()');
     if (this.results.some(result => result.status === 'timedOut')) {
-      console.log('⏳ Timed Out Detected');
+      console.log('⏳ Timed Out Detected'); //Debug
       return 'aborted';
     }
     if (this.results.some(result => result.status === 'interrupted')) {
-      console.log('🚨 Interrupted Detected');
+      console.log('🚨 Interrupted Detected'); //Debug
       return 'aborted';
     }
     if (sigintWatcher .hadSignal()) {  
-      console.log('🔴 SIGINT Detected - Marking as interrupted');
+      console.log('🔴 SIGINT Detected - Marking as interrupted'); //Debug
       return 'aborted';
     }
     return 'skipped';
