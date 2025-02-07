@@ -17,7 +17,7 @@
 import { colors, debug } from 'playwright-core/lib/utilsBundle';
 import { ManualPromise, monotonicTime } from 'playwright-core/lib/utils';
 import type { FullResult, TestError } from '../../types/testReporter';
-import { SigIntWatcher } from './sigIntWatcher';
+import { sigintWatcher } from './sigIntWatcher';
 import { serializeError } from '../util';
 import type { InternalReporter } from '../reporters/internalReporter';
 
@@ -31,7 +31,7 @@ export class TaskRunner<Context> {
   private _interrupted = false;
   private _isTearDown = false;
   private _globalTimeoutForError: number;
-
+ 
   constructor(reporter: InternalReporter, globalTimeoutForError: number) {
     this._reporter = reporter;
     this._globalTimeoutForError = globalTimeoutForError;
@@ -48,7 +48,6 @@ export class TaskRunner<Context> {
   }
 
   async runDeferCleanup(context: Context, deadline: number, cancelPromise = new ManualPromise<void>()): Promise<{ status: FullResult['status'], cleanup: () => Promise<FullResult['status']> }> {
-    const sigintWatcher = new SigIntWatcher();
     const timeoutWatcher = new TimeoutWatcher(deadline);
     const teardownRunner = new TaskRunner<Context>(this._reporter, this._globalTimeoutForError);
     teardownRunner._isTearDown = true;
@@ -97,10 +96,10 @@ export class TaskRunner<Context> {
 
     let status: FullResult['status'] = 'passed';
     if (sigintWatcher.hadSignal() || cancelPromise?.isDone()) {
-      status = 'interrupted';
+      status = 'aborted';
     } else if (timeoutWatcher.timedOut()) {
       this._reporter.onError?.({ message: colors.red(`Timed out waiting ${this._globalTimeoutForError / 1000}s for the ${currentTaskName} to run`) });
-      status = 'timedout';
+      status = 'aborted';
     } else if (this._hasErrors) {
       status = 'failed';
     }

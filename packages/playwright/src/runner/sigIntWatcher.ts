@@ -13,6 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+declare global {
+  var sigintWatcher: SigIntWatcher | undefined; 
+}
 
 export class SigIntWatcher {
   private _hadSignal: boolean = false;
@@ -42,6 +45,11 @@ export class SigIntWatcher {
   }
 }
 
+if (!globalThis.sigintWatcher) {
+  globalThis.sigintWatcher = new SigIntWatcher();
+}
+
+export const sigintWatcher = globalThis.sigintWatcher as SigIntWatcher;
 // NPM/NPX will send us duplicate SIGINT signals, so we need to ignore them.
 class FixedNodeSIGINTHandler {
   private static _handlers: (() => void)[] = [];

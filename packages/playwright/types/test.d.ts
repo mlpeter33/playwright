@@ -1967,7 +1967,7 @@ export interface FullConfig<TestArgs = {}, WorkerArgs = {}> {
   workers: number;
 }
 
-export type TestStatus = 'passed' | 'failed' | 'timedOut' | 'skipped' | 'interrupted';
+export type TestStatus = 'passed' | 'failed' | 'timedOut' | 'skipped' | 'interrupted' | 'aborted';
 
 export type TestDetailsAnnotation = {
   type: string;
@@ -9367,7 +9367,7 @@ export interface TestInfo {
    * ```
    *
    */
-  expectedStatus: "passed"|"failed"|"timedOut"|"skipped"|"interrupted";
+  expectedStatus: "passed"|"failed"|"timedOut"|"skipped"|"interrupted" | "aborted";
 
   /**
    * Absolute path to a file where the currently running test is declared.
@@ -9477,7 +9477,7 @@ export interface TestInfo {
    * ```
    *
    */
-  status?: "passed"|"failed"|"timedOut"|"skipped"|"interrupted";
+  status?: "passed"|"failed"|"timedOut"|"skipped"|"interrupted" | "aborted";
 
   /**
    * Tags that apply to the test. Learn more about [tags](https://playwright.dev/docs/test-annotations#tag-tests).

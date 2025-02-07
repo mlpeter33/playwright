@@ -21,6 +21,7 @@ import { rootTestType } from './testType';
 import type { Annotation, FixturesWithLocation, FullProjectInternal } from './config';
 import type { Location, FullProject } from '../../types/testReporter';
 import { computeTestCaseOutcome } from '../isomorphic/teleReceiver';
+import { sigintWatcher } from '../runner/sigIntWatcher';
 
 class Base {
   title: string;
@@ -278,13 +279,13 @@ export class TestCase extends Base implements reporterTypes.TestCase {
     return titlePath;
   }
 
-  outcome(): 'skipped' | 'expected' | 'unexpected' | 'flaky' {
+  outcome(): 'skipped' | 'expected' | 'unexpected' | 'flaky' | 'aborted' {
     return computeTestCaseOutcome(this);
   }
 
   ok(): boolean {
     const status = this.outcome();
-    return status === 'expected' || status === 'flaky' || status === 'skipped';
+    return status === 'expected' || status === 'flaky' || status === 'skipped' || status === 'aborted';
   }
 
   get tags(): string[] {
@@ -346,7 +347,7 @@ export class TestCase extends Base implements reporterTypes.TestCase {
       stdout: [],
       stderr: [],
       attachments: [],
-      status: 'skipped',
+      status: this._determineTestStatus(),
       steps: [],
       errors: [],
     };
@@ -361,4 +362,22 @@ export class TestCase extends Base implements reporterTypes.TestCase {
     path.push(...this._tags);
     return path.join(' ');
   }
+
+  _determineTestStatus(): reporterTypes.TestStatus {
+    console.log('🟢 Running _determineTestStatus()');
+    if (this.results.some(result => result.status === 'timedOut')) {
+      console.log('⏳ Timed Out Detected');
+      return 'aborted';
+    }
+    if (this.results.some(result => result.status === 'interrupted')) {
+      console.log('🚨 Interrupted Detected');
+      return 'aborted';
+    }
+    if (sigintWatcher .hadSignal()) {  
+      console.log('🔴 SIGINT Detected - Marking as interrupted');
+      return 'aborted';
+    }
+    return 'skipped';
+  }
 }
+
