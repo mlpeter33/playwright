@@ -572,6 +572,7 @@ const addStats = (stats: Stats, delta: Stats): Stats => {
   stats.expected += delta.expected;
   stats.unexpected += delta.unexpected;
   stats.flaky += delta.flaky;
+  stats.aborted += delta.aborted;
   stats.ok = stats.ok && delta.ok;
   return stats;
 };

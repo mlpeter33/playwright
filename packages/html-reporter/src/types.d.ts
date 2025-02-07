@@ -70,7 +70,7 @@ export type TestCaseSummary = {
   location: Location;
   annotations: TestCaseAnnotation[];
   tags: string[];
-  outcome: 'skipped' | 'expected' | 'unexpected' | 'flaky';
+  outcome: 'skipped' | 'expected' | 'unexpected' | 'flaky' | 'aborted';
   duration: number;
   ok: boolean;
   results: TestResultSummary[];

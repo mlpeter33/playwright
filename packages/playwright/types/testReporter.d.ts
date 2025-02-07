@@ -251,6 +251,7 @@ export interface JSONReport {
     unexpected: number;
     flaky: number;
     skipped: number;
+    aborted: number;
   }
 }
 
@@ -281,7 +282,7 @@ export interface JSONReportTest {
   projectName: string;
   projectId: string;
   results: JSONReportTestResult[];
-  status: 'skipped' | 'expected' | 'unexpected' | 'flaky';
+  status: 'skipped' | 'expected' | 'unexpected' | 'flaky' | 'aborted';
 }
 
 export interface JSONReportError {
@@ -428,7 +429,7 @@ export interface TestCase {
    * - Test that is expected to fail and actually fails is `'expected'`.
    * - Test that passes on a second retry is `'flaky'`.
    */
-  outcome(): "skipped"|"expected"|"unexpected"|"flaky";
+  outcome(): "skipped"|"expected"|"unexpected"|"flaky" | "aborted";
 
   /**
    * Returns a list of titles from the root down to this test.
